@@ -30,12 +30,35 @@ namespace MercDevs_ej2.Controllers
         // GET: Listar Recepcion de equipos POR CLIENTE. - RecepcionEquipoPorCliente
         public async Task<IActionResult> RecepcionEquipoPorCliente(int id)
         {
+            var cliente = await _context.Clientes
+                .FirstOrDefaultAsync(m => m.IdCliente == id);
+
+
             var mercydevsEjercicio2Context = _context.Recepcionequipos
                 .Where(r => r.IdCliente == id)
                 .Include(r => r.IdClienteNavigation)
                 .Include(r => r.IdServicioNavigation);
             return View(await mercydevsEjercicio2Context.ToListAsync());
         }
+
+        // GET: LISTAR SERVICIOS POR CLIENTE - ServiciosPorCliente
+        public async Task<IActionResult> ServiciosPorCliente(int id)
+        {
+            var servicios = await _context.Recepcionequipos
+                .Where(r => r.IdCliente == id)
+                .Include(r => r.IdServicioNavigation)
+                .Select(r => r.IdServicioNavigation)
+                .ToListAsync();
+
+            if (servicios == null || !servicios.Any())
+            {
+                return NotFound();
+            }
+
+            ViewBag.ClienteId = id;
+            return View(servicios);
+        }
+
 
         // GET: Recepcionequipoes/Details/5
         public async Task<IActionResult> Details(int? id)

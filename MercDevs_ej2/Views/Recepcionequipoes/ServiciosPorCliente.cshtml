@@ -1,0 +1,49 @@
+﻿@model IEnumerable<MercDevs_ej2.Models.Servicio>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Servicios Por Cliente Unico</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Precio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sku)
+            </th>
+            <th>
+                ID Cliente
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Precio)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sku)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UsuarioIdUsuarioNavigation.IdUsuario)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-controller="Servicios" asp-route-id="@item.IdServicio" class="btn btn-info">Ver Detalles</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

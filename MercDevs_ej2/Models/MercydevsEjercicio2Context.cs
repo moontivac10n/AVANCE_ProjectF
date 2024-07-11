@@ -18,7 +18,11 @@ public partial class MercydevsEjercicio2Context : DbContext
 
     public virtual DbSet<Cliente> Clientes { get; set; }
 
+    public virtual DbSet<Datosfichatecnica> Datosfichatecnicas { get; set; }
+
     public virtual DbSet<Descripcionservicio> Descripcionservicios { get; set; }
+
+    public virtual DbSet<Diagnosticosolucion> Diagnosticosolucions { get; set; }
 
     public virtual DbSet<Recepcionequipo> Recepcionequipos { get; set; }
 
@@ -27,11 +31,15 @@ public partial class MercydevsEjercicio2Context : DbContext
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+    //     => optionsBuilder.UseMySql("server=localhost;port=3306;database=mercy_developer;uid=root", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.32-mariadb"));
     {
         if (!optionsBuilder.IsConfigured)
         {
+
         }
     }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
@@ -55,6 +63,48 @@ public partial class MercydevsEjercicio2Context : DbContext
             entity.Property(e => e.Telefono).HasMaxLength(45);
         });
 
+        modelBuilder.Entity<Datosfichatecnica>(entity =>
+        {
+            entity.HasKey(e => e.IdDatosFichaTecnica).HasName("PRIMARY");
+
+            entity.ToTable("datosfichatecnica");
+
+            entity.HasIndex(e => e.RecepcionEquipoId, "fk_DatosFichaTecnica_RecepcionEquipo1_idx");
+
+            entity.Property(e => e.IdDatosFichaTecnica)
+                .HasColumnType("int(11)")
+                .HasColumnName("idDatosFichaTecnica");
+            entity.Property(e => e.AntivirusInstalado)
+                .HasMaxLength(100)
+                .HasColumnName("Antivirus Instalado");
+            entity.Property(e => e.FechaFinalizacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaInicio).HasColumnType("datetime");
+            entity.Property(e => e.LectorPdfinstalado)
+                .HasComment("0:No Instalado ; 1: Instalado 2: No aplica")
+                .HasColumnType("int(11)")
+                .HasColumnName("LectorPDFInstalado");
+            entity.Property(e => e.NavegadorWebInstalado)
+                .HasComment("0:No instalado ; 1: Chrome ; 2: Firefox; 3: Chrome y Firefox")
+                .HasColumnType("int(11)");
+            entity.Property(e => e.PobservacionesRecomendaciones)
+                .HasMaxLength(2000)
+                .HasComment("Por el Tecnico")
+                .HasColumnName("PObservacionesRecomendaciones");
+            entity.Property(e => e.RecepcionEquipoId).HasColumnType("int(11)");
+            entity.Property(e => e.Soinstalado)
+                .HasComment("0:Windows 10 ; 1: Windows 11; 2: Linux")
+                .HasColumnType("int(11)")
+                .HasColumnName("SOInstalado");
+            entity.Property(e => e.SuiteOfficeInstalada)
+                .HasComment("0: Microsoft Office 2013 ; 1: Microsoft Office 2019 ; 2: Microsoft Office 365 ; 3: OpenOffice")
+                .HasColumnType("int(11)");
+
+            entity.HasOne(d => d.RecepcionEquipo).WithMany(p => p.Datosfichatecnicas)
+                .HasForeignKey(d => d.RecepcionEquipoId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_DatosFichaTecnica_RecepcionEquipo1");
+        });
+
         modelBuilder.Entity<Descripcionservicio>(entity =>
         {
             entity.HasKey(e => e.IdDescServ).HasName("PRIMARY");
@@ -75,6 +125,27 @@ public partial class MercydevsEjercicio2Context : DbContext
                 .HasForeignKey(d => d.ServicioIdServicio)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_DescripcionServicio_Servicio1");
+        });
+
+        modelBuilder.Entity<Diagnosticosolucion>(entity =>
+        {
+            entity.HasKey(e => e.IdDiagnosticoSolucion).HasName("PRIMARY");
+
+            entity.ToTable("diagnosticosolucion");
+
+            entity.HasIndex(e => e.DatosFichaTecnicaId, "fk_DiagnosticoSolucion_DatosFichaTecnica1_idx");
+
+            entity.Property(e => e.IdDiagnosticoSolucion)
+                .HasColumnType("int(11)")
+                .HasColumnName("idDiagnosticoSolucion");
+            entity.Property(e => e.DatosFichaTecnicaId).HasColumnType("int(11)");
+            entity.Property(e => e.DescripcionDiagnostico).HasMaxLength(1000);
+            entity.Property(e => e.DescripcionSolucion).HasMaxLength(1000);
+
+            entity.HasOne(d => d.DatosFichaTecnica).WithMany(p => p.Diagnosticosolucions)
+                .HasForeignKey(d => d.DatosFichaTecnicaId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_DiagnosticoSolucion_DatosFichaTecnica1");
         });
 
         modelBuilder.Entity<Recepcionequipo>(entity =>
@@ -154,7 +225,7 @@ public partial class MercydevsEjercicio2Context : DbContext
             entity.Property(e => e.Correo).HasMaxLength(45);
             entity.Property(e => e.Nombre).HasMaxLength(45);
             entity.Property(e => e.Password)
-                .HasMaxLength(45)
+                .HasMaxLength(100)
                 .HasColumnName("password");
         });
 
