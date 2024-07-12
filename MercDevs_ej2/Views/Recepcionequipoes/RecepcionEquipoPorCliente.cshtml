@@ -4,11 +4,9 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Recepcion de Equipo: </h1>
+<h1>Recepcion de Equipo por Cliente</h1>
 <body style="align-content:center">
-    <p>
-        <a asp-action="Create"><button type="button" class="btn btn-success ">Crear Recepcion</button></a>
-    </p>
+
     <table class="table">
         <thead td style="white-space: nowrap;">
             <tr>
@@ -44,20 +42,14 @@
                         @Html.DisplayFor(modelItem => item.IdServicioNavigation.Nombre)
                     </td>
                     <td>
-
                         <div class="d-flex justify-content-around" style="gap:10px">
-                            <a asp-action="Edit" asp-route-id="@item.Id">
-                                <button type="button" class="btn btn-primary" style="width:100%">Editar</button>
-                            </a>
+                            <a asp-action="Edit" asp-route-id="@item.Id"> <button type="button" class="btn btn-primary">Editar</button> </a>
 
-                            <a asp-action="Details" asp-route-id="@item.Id">
-                                <button type="button" class="btn btn-info" style="width:100%">Detalles</button>
-                            </a>
-
-                            <a asp-action="Delete" asp-route-id="@item.Id">
-                                <button type="button" class="btn btn-danger" style="width:100%">Borrar</button>
-                            </a>
+                            <a asp-action="Details" asp-route-id="@item.Id"> <button type="button" class="btn btn-info">Detalles</button></a>
+                            <a asp-action="Details" asp-route-id="@item.Id"> <button type="button" class="btn btn-success">Recepcion del equipo</button></a>
+                            <a asp-action="Delete" asp-route-id="@item.Id"><button type="button" class="btn btn-danger">Borrar</button></a>
                         </div>
+
                     </td>
                 </tr>
             }

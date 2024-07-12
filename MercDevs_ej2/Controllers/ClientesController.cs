@@ -26,6 +26,7 @@ namespace MercDevs_ej2.Controllers
             return View(await _context.Clientes.ToListAsync());
         }
 
+
         // GET: Clientes/Details/5
         public async Task<IActionResult> Details(int? id)
         {

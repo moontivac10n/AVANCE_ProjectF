@@ -1,24 +1,27 @@
-﻿@using System.Security.Claims;
-
+﻿@model IEnumerable<MercDevs_ej2.Models.Recepcionequipo>
 
 @{
-    ViewData["Title"] = "Página de Inicio";
+    ViewData["Title"] = "Recepción de Equipos en Proceso";
 }
 
-@if (User.Identity!.IsAuthenticated)
-{
-    <div class="text-center">
-        <h1 class="display-4">Bienvenido 
-        @User.Claims.Where(c =>
-            c.Type == ClaimTypes.Name).Select(c => 
-                c.Value).SingleOrDefault()
-        @User.Claims.Where(c =>
-                c.Type == ClaimTypes.Email).Select(c =>
-            c.Value).SingleOrDefault()
-     
-        </h1>
-        <p>Requerimientos del laboraroio: Completado</p>
-    </div>
-};
+<div class="container">
+    <h1>Recepción de Equipos en Proceso</h1>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Correo Electrónico</th>
+                <th>Fecha Recepción</th>
+                <th>Marca de PC</th>
+                <th>Modelo de PC</th>
+                <th>Nombre del Servicio</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
 
 
+        </tbody>
+    </table>
+</div>

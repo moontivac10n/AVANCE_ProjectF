@@ -41,6 +41,8 @@ namespace MercDevs_ej2.Controllers
             return View(await mercydevsEjercicio2Context.ToListAsync());
         }
 
+
+
         // GET: LISTAR SERVICIOS POR CLIENTE - ServiciosPorCliente
         public async Task<IActionResult> ServiciosPorCliente(int id)
         {
